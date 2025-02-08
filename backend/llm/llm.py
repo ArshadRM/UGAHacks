@@ -32,7 +32,30 @@ def ask_ollama(api_key: str, model: str, message: str, server_url: str = "http:/
         return {"error": str(e)}
     
 def generate_questions(topic: str, api_key: str = api_key):
-    question = f"Give me 10 multiple choice questions and answers about {topic} in a JSON format don't say anything else."
+    question = """Give me 10 multiple choice questions and answers about """ + topic + """ in this exact format format don't say anything else.:
+    [
+    {
+      question: "What is 2 + 2?",
+      answer: "4",
+      options: ["3", "4", "5", "6"]
+    },
+    {
+      question: "Which planet is closest to the Sun?",
+      answer: "Mercury",
+      options: ["Venus", "Mercury", "Mars", "Earth"]
+    },
+    {
+      question: "What is the capital of France?",
+      answer: "Paris",
+      options: ["London", "Berlin", "Paris", "Madrid"]
+    },
+    {
+      question: "How many continents are there?",
+      answer: "7",
+      options: ["5", "6", "7", "8"]
+    }
+  ]
+    """
     response = ask_ollama(api_key, "llama3.2:latest", question)
 
     # Print only the response content

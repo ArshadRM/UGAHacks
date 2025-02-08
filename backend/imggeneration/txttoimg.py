@@ -14,8 +14,8 @@ def query_tti(prompt: str, negative_prompt: str):
 
     # JSON data to be sent in the POST request, contains our stable diffusion parameters
     data = {
-        "prompt": prompt,
-        "negative_prompt": negative_prompt,
+        "prompt": prompt + "pixels, pixel art,  <lora:pixelbuildings128-v2:1>, (white background)",
+        "negative_prompt": "text,watermark,blurry, deformed, depth of field,realistic, 3d render, outline, worst quality, low quality, lowres,out of focus, watermark, signature, logo, text, repeating patterns",
         "styles": ["string"],
         "steps": 20
     }
@@ -50,24 +50,40 @@ def query_tti(prompt: str, negative_prompt: str):
 def generate_image(prompt: str):
     # Generate the positive and negative prompts from the query
     response = ask_ollama("llama3.2:latest", 
-                          f"give me a positive and negative prompt associated with {prompt} commonly used for stable diffusion "
-                          "image generation have only the 2 words and separate them with a space"
-                          " only have the words Positive: and Negative: followed by their positive and negative prompts"
-                          " do not have the phrase: Here are the positive and negative prompts associated with {prompt} commonly used for "
-                          " stable diffusion image generation: or any variant ONLY have 2 lines with the positve and negative "
-                          " prompts are previously described")
+                          f"Make one long and comprehensive Stable Diffusion image prompt about {prompt}. All image prompts must be 30 adjectives in a comma list. All prompts must be about physical object that represent {prompt}. Each object must be more complex than the last one. Respond with the prompt itself")
     
     # Print only the response content
     if "choices" in response and response["choices"]:
         posneg = response["choices"][0]["message"]["content"]
         # Split the response into lines
-        lines = posneg.split("\n")
+        # lines = posneg.split("\n")
 
         # Extract values
-        positive_prompt = lines[0].replace("Positive: ", "").strip()
-        negative_prompt = lines[1].replace("Negative: ", "").strip()
+        # positive_prompt = lines[0].replace("Positive: ", "").strip()
+        # negative_prompt = lines[1].replace("Negative: ", "").strip()
         
-        image_base64 = query_tti(positive_prompt, negative_prompt)
+        image_base64 = query_tti(posneg, "")
         return image_base64
     else:
         print("No valid positive and negative prompt generation response found.")
+
+def generate_upgrades(topic: str):
+    response = ask_ollama("jsonllama32", f"""
+
+    Make 5 pixel art Stable Diffusion image prompts about {topic}. All image prompts must be 15 adjectives in a comma list. All prompts must be about physical objects that represent {topic}. Each object must be more complex than the last one. All responses must be in this JSON format.
+
+[
+    {
+    "object": "Temple Ruins",
+        "prompt": "Ancient Egyptian temple ruins, crumbling stone structures, worn sandstone facades, weathered hieroglyphics"
+
+    },
+    {
+    "object": "cathedral",
+        "prompt": "Majestic Gothic cathedral, intricate stone carvings, stained glass windows, ornate Gothic arches"
+    }
+] 
+
+""")
+
+    print(response)

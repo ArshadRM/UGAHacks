@@ -2,7 +2,7 @@ import requests
 
 api_key = "sk-08db4e2ba41848eb9235b1b52610bcfb"
 
-def ask_ollama(api_key: str, model: str, message: str, server_url: str = "http://win-arsh:3000/api/chat/completions"):
+def ask_ollama(model: str, message: str, server_url: str = "http://win-arsh:3000/api/chat/completions", api_key: str = api_key):
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
@@ -56,7 +56,7 @@ def generate_questions(topic: str, api_key: str = api_key):
     }
   ]
     """
-    response = ask_ollama(api_key, "jsonllama32", question)
+    response = ask_ollama("jsonllama32", question)
 
     # Print only the response content
     if "choices" in response and response["choices"]:

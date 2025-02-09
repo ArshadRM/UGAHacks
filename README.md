@@ -36,8 +36,8 @@ We used a frontend hosted by Github Pages, and a custom backend REST API hosted 
  - Ollama : Offline language model AI manager
  - Open WebUI : Feature-rich offline LLM frontend / API
 
- - Stable Diffusion WebUI Forge : Offline image 
- - Civit-ai : Reposity for Image-Generation Models
+ - Stable Diffusion WebUI Forge : Offline image generation
+ - Civit-ai : Repository for Image-Generation Models
  - Localtunnel : Easily share a web service on local developments
  
  - Flask : Python framework for easy API endpoint creation

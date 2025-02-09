@@ -1,6 +1,6 @@
 let startTime;
 let elapsedInterval;
-let estimatedTime = 20; // Estimated time in seconds
+let estimatedTime = 40; // Estimated time in seconds
 let images = []
 
 const loadedImages = [];
@@ -85,7 +85,7 @@ async function submitTopic() {
 
   try {
       // First request
-      const response = await fetch('http://vmserver:5000/generate-questions', {
+      const response = await fetch('https://trivy-study.loca.lt/generate-questions', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ async function submitTopic() {
       const data = await response.json();
 
       // Second request
-      const response1 = await fetch('http://vmserver:5000/generate-upgrades', {
+      const response1 = await fetch('https://trivy-study.loca.lt/generate-upgrades', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ function processReceivedQuestions(data) {
   canvas.height = canvas.offsetHeight;
   
   let gameState = {
-    points: 100000000,
+    points: 100,
     pointsPerAnswer: 1,
     autoPointsPerSecond: 0,
     buildings: [],
